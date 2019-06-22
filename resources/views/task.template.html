@@ -1,0 +1,14 @@
+<div class="form_item_block">
+    <label>Image:</label>
+    <input type="text" ng-model="IMAGE" ng-required="true" />
+    <span class="form_error" ng-show="GOINPUTNAME[IMAGE].$error.server">{{ GOINPUTNAME[IMAGE].$error.server }}</span>
+</div>
+<div class="form_item_block">
+    <label>Command:</label>
+    <input type="text" ng-model="COMMAND" ng-required="true" />
+    <span class="form_error" ng-show="GOINPUTNAME[COMMAND].$error.server">{{ GOINPUTNAME[COMMAND].$error.server }}</span>
+</div>
+<div class="form_item_block">
+    <label>Mounts:</label>
+    <textarea ng-model="MOUNTS" ng-required="false" cols="50" rows="5" placeholder="Enter each mount directory on a new line"></textarea>
+</div>

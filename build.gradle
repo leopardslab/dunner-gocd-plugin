@@ -1,0 +1,54 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'maven'
+
+group = 'cd.go.plugin'
+version = '0.0.1'
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/']
+        }
+    }
+    test {
+        java {
+            srcDirs = ['test/']
+        }
+    }
+}
+
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+repositories {
+    mavenCentral()
+    maven { url "http://repo.maven.apache.org/maven2" }
+}
+
+dependencies {
+    compile group: 'cd.go.plugin', name: 'go-plugin-api', version:'16.11.0'
+    compile group: 'com.google.code.gson', name: 'gson', version:'2.3.1'
+    compile group: 'commons-io', name: 'commons-io', version: '2.6'
+}
