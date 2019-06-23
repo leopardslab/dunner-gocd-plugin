@@ -1,6 +1,5 @@
 package com.leopardslab.dunner;
 
-import com.google.gson.GsonBuilder;
 import com.thoughtworks.go.plugin.api.GoApplicationAccessor;
 import com.thoughtworks.go.plugin.api.GoPlugin;
 import com.thoughtworks.go.plugin.api.GoPluginIdentifier;
@@ -12,6 +11,7 @@ import com.thoughtworks.go.plugin.api.response.DefaultGoApiResponse;
 import com.thoughtworks.go.plugin.api.response.DefaultGoPluginApiResponse;
 import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
 import org.apache.commons.io.IOUtils;
+import com.google.gson.GsonBuilder;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -79,7 +79,7 @@ public class DunnerTask implements GoPlugin {
     private GoPluginApiResponse handleTaskView() {
         int responseCode = DefaultGoApiResponse.SUCCESS_RESPONSE_CODE;
         Map view = new HashMap();
-        view.put("displayValue", "Docker Task");
+        view.put("displayValue", "Dunner Task");
         try {
             view.put("template", IOUtils.toString(getClass().getResourceAsStream("/views/task.template.html"), "UTF-8"));
         } catch (Exception e) {
@@ -93,7 +93,8 @@ public class DunnerTask implements GoPlugin {
 
     private GoPluginApiResponse createResponse(int responseCode, Map body) {
         final DefaultGoPluginApiResponse response = new DefaultGoPluginApiResponse(responseCode);
-        response.setResponseBody(new GsonBuilder().serializeNulls().create().toJson(body));
+        GsonBuilder gb = new GsonBuilder();
+        response.setResponseBody(gb.serializeNulls().create().toJson(body));
         return response;
     }
 }

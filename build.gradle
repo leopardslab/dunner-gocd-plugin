@@ -3,6 +3,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
+
     }
 }
 
@@ -15,18 +16,6 @@ version = '0.0.1'
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
-sourceSets {
-    main {
-        java {
-            srcDirs = ['src/']
-        }
-    }
-    test {
-        java {
-            srcDirs = ['test/']
-        }
-    }
-}
 
 task javadocJar(type: Jar) {
     classifier = 'javadoc'
@@ -47,8 +36,21 @@ repositories {
     maven { url "http://repo.maven.apache.org/maven2" }
 }
 
+configurations {
+    extraLibs
+}
+
 dependencies {
-    compile group: 'cd.go.plugin', name: 'go-plugin-api', version:'16.11.0'
-    compile group: 'com.google.code.gson', name: 'gson', version:'2.3.1'
-    compile group: 'commons-io', name: 'commons-io', version: '2.6'
+    extraLibs group: 'com.google.code.gson', name: 'gson', version: '2.8.5'
+    extraLibs group: 'cd.go.plugin', name: 'go-plugin-api', version:'19.5.0'
+    extraLibs group: 'commons-io', name: 'commons-io', version: '2.6'
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+
+    configurations.compile.extendsFrom(configurations.extraLibs)
+}
+
+jar {
+    from {
+            configurations.extraLibs.collect { it.isDirectory() ? it : zipTree(it) }
+        }
 }
