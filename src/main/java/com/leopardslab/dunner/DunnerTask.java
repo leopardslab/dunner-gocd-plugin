@@ -20,7 +20,10 @@ import java.util.Map;
 @Extension
 public class DunnerTask implements GoPlugin {
     Logger logger = Logger.getLoggerFor(DunnerTask.class);
-    public static final String DOCKER_IMAGE = "image";
+    public static final String DOCKER_IMAGE = "IMAGE";
+    public static final String DOCKER_COMMANDS = "COMMANDS";
+    public static final String DOCKER_MOUNTS = "MOUNTS";
+    public static final String DOCKER_ENVS = "ENVS";
 
     @Override
     public void initializeGoApplicationAccessor(GoApplicationAccessor goApplicationAccessor) {
@@ -66,7 +69,6 @@ public class DunnerTask implements GoPlugin {
     private GoPluginApiResponse handleGetConfigRequest() {
         HashMap config = new HashMap();
         addDunnerConfig(config);
-
         return createResponse(DefaultGoPluginApiResponse.SUCCESS_RESPONSE_CODE, config);
     }
 
@@ -74,6 +76,18 @@ public class DunnerTask implements GoPlugin {
         HashMap dockerImage = new HashMap();
         dockerImage.put("required", true);
         config.put(DOCKER_IMAGE, dockerImage);
+
+        HashMap dockerCommands = new HashMap();
+        dockerCommands.put("required", true);
+        config.put(DOCKER_COMMANDS, dockerCommands);
+
+        HashMap dockerMounts = new HashMap();
+        dockerMounts.put("required", false);
+        config.put(DOCKER_MOUNTS, dockerMounts);
+
+        HashMap dockerEnvs = new HashMap();
+        dockerEnvs.put("required", false);
+        config.put(DOCKER_ENVS, dockerEnvs);
     }
 
     private GoPluginApiResponse handleTaskView() {
