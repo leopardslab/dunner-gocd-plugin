@@ -1,4 +1,9 @@
 <div class="form_item_block">
+    <label>Task Name:</label>
+    <input type="text" ng-model="NAME" ng-required="true" />
+    <span class="form_error" ng-show="GOINPUTNAME[NAME].$error.server">{{ GOINPUTNAME[NAME].$error.server }}</span>
+</div>
+<div class="form_item_block">
     <label>Image:</label>
     <input type="text" ng-model="IMAGE" ng-required="true" />
     <span class="form_error" ng-show="GOINPUTNAME[IMAGE].$error.server">{{ GOINPUTNAME[IMAGE].$error.server }}</span>

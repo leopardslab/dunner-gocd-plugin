@@ -20,6 +20,7 @@ import java.util.Map;
 @Extension
 public class DunnerTask implements GoPlugin {
     Logger logger = Logger.getLoggerFor(DunnerTask.class);
+    public static final String DOCKER_TASK_NAME = "NAME";
     public static final String DOCKER_IMAGE = "IMAGE";
     public static final String DOCKER_COMMANDS = "COMMANDS";
     public static final String DOCKER_MOUNTS = "MOUNTS";
@@ -52,7 +53,17 @@ public class DunnerTask implements GoPlugin {
     private GoPluginApiResponse handleValidation(GoPluginApiRequest request) {
         HashMap validationResult = new HashMap();
         int responseCode = DefaultGoPluginApiResponse.SUCCESS_RESPONSE_CODE;
+        HashMap errorMap = new HashMap();
 
+        Map configMap = (Map) new GsonBuilder().create().fromJson(request.requestBody(), Object.class);
+        if (((String) ((Map) configMap.get(DOCKER_IMAGE)).get("value")).trim().isEmpty()) {
+            errorMap.put(DOCKER_IMAGE, "Image cannot be empty");
+        }
+        if (((String) ((Map) configMap.get(DOCKER_TASK_NAME)).get("value")).trim().isEmpty()) {
+            errorMap.put(DOCKER_TASK_NAME, "Task name cannot be empty");
+        }
+
+        validationResult.put("errors", errorMap);
         return createResponse(responseCode, validationResult);
     }
 
@@ -73,6 +84,10 @@ public class DunnerTask implements GoPlugin {
     }
 
     private void addDunnerConfig(HashMap config) {
+        HashMap dockerTaskName = new HashMap();
+        dockerTaskName.put("required", true);
+        config.put(DOCKER_TASK_NAME, dockerTaskName);
+
         HashMap dockerImage = new HashMap();
         dockerImage.put("required", true);
         config.put(DOCKER_IMAGE, dockerImage);

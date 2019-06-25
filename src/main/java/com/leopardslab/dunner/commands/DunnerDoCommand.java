@@ -7,13 +7,16 @@ import com.leopardslab.dunner.Config;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DunnerCommand implements Command {
+public class DunnerDoCommand implements Command {
     protected List<String> command = new ArrayList<>();
     protected static JobConsoleLogger logger = JobConsoleLogger.getConsoleLogger();
 
-    public DunnerCommand(Context taskContext, Config taskConfig) {
+    public DunnerDoCommand(Context taskContext, Config taskConfig, String taskFilePath) {
         command.add("dunner");
-        command.add("-v");
+        command.add("do");
+        command.add(taskConfig.getName());
+        command.add("-t");
+        command.add(taskFilePath);
     }
 
     public void run() throws Exception {

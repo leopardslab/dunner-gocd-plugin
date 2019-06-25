@@ -12,7 +12,7 @@ Download the jar file of this plugin and copy it to the external plugins directo
 
 * Select task type as `Dunner Task` when creating a new task in a build job. 
 
-![New Dunner Task](docs/images/new_task.png)
+	![New Dunner Task](docs/images/new_task.png)
 
 * Specify the image to be used, commands, mount directories, environment variable values in configuration.
 * `Save` task.
