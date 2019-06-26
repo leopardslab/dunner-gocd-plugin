@@ -9,7 +9,7 @@ public class DunnerTaskExecutor {
     private static JobConsoleLogger consoleLogger = JobConsoleLogger.getConsoleLogger();
 
     public Result execute(Config config, Context context) {
-        DunnerTaskFileCreator tfc = new DunnerTaskFileCreator(config);
+        DunnerTaskFileCreator tfc = new DunnerTaskFileCreator(config, context);
         String taskFilePath = "";
         try {
             taskFilePath = tfc.saveToTempFile();

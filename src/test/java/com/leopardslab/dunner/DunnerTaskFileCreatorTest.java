@@ -36,7 +36,8 @@ public class DunnerTaskFileCreatorTest {
 		    }});
 		}};
 		Config config = new Config(configMap);
-		DunnerTaskFileCreator creator = new DunnerTaskFileCreator(config);
+		Context context = new Context(new HashMap<String, String>());
+		DunnerTaskFileCreator creator = new DunnerTaskFileCreator(config, context);
 
 		DunnerTaskFile taskFile = creator.getTask();
 
@@ -67,7 +68,10 @@ public class DunnerTaskFileCreatorTest {
 		    }});
 		}};
 		Config config = new Config(configMap);
-		DunnerTaskFileCreator creator = new DunnerTaskFileCreator(config);
+		Context context = new Context(new HashMap<String, String>() {{
+			put("workingDirectory", System.getProperty("java.io.tmpdir"));
+		}});
+		DunnerTaskFileCreator creator = new DunnerTaskFileCreator(config, context);
 
 		String taskFilePath = creator.saveToTempFile();
 
@@ -87,7 +91,7 @@ public class DunnerTaskFileCreatorTest {
 		String obtained = new String(Files.readAllBytes(Paths.get(taskFilePath)));
 		FileUtils.deleteDirectory(new File(taskFilePath).getParentFile());
 		assertEquals("Task file contents not matching", expected, obtained);
-		assertTrue(Pattern.matches(String.format("%s/gocd_dunner/.dunner_\\d*.yaml", System.getProperty("user.dir")), taskFilePath));
+		assertTrue(Pattern.matches(String.format("%sgocd_dunner/.dunner.yaml", System.getProperty("java.io.tmpdir")), taskFilePath));
 	}
 
 }

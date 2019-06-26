@@ -16,6 +16,10 @@ Download the jar file of this plugin and copy it to the external plugins directo
 
 * Specify the image to be used, commands, mount directories, environment variable values in configuration.
 * `Save` task.
+* To be able to download dunner task file from pipeline configuration, add `gocd_dunner` directory as artifact and add `gocd_dunner/.dunner.yaml` to custom tab. This gives you direct link to download dunner task file for reference or to run task manually without GoServer.
+
+![Artifact](docs/images/artifact.png)
+![Custom Tab](docs/images/custom_tab.png)
 
 ## Support
 * Go.cd: 17.3.0+ Note: This is only tested regularly against 17.3.0 and latest. This could potentially work with older versions, but not tested.

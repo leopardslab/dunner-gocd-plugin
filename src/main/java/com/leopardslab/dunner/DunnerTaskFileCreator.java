@@ -13,30 +13,31 @@ public class DunnerTaskFileCreator {
 	Logger logger = Logger.getLoggerFor(DunnerTask.class);
 
 	public static final String taskFileDir = "gocd_dunner";
-	private String taskFilePath;
 	private DunnerTaskFile task;
+	private String pwd = "";
 
-	public DunnerTaskFileCreator(Config taskConfig) {
+	public DunnerTaskFileCreator(Config taskConfig, Context context) {
 		String[] taskCommands = clean(taskConfig.getCommands());
 		String[] taskMounts = clean(taskConfig.getMounts());
 		String[] taskEnvs = clean(taskConfig.getEnvs());
+		pwd = context.getWorkingDir();
 		this.task = new DunnerTaskFile(taskConfig.getName(), taskConfig.getImage(), taskCommands, taskMounts, taskEnvs);
 	}
 
 	public String saveToTempFile() throws IOException {
-        String workingDir = System.getProperty("user.dir");
-        String taskFileDirPath = String.format("%s/%s", workingDir, taskFileDir);
+        String taskFileDirPath = String.format("%s/%s", pwd, taskFileDir);
         File taskDir = new File(taskFileDirPath);
-        if (!taskDir.exists()) {
-        	boolean created = taskDir.mkdirs();
-        	if (!created) {
-        		throw new IOException("Failed to create directory for task file");
-        	}
-        }
+        if (taskDir.exists()) {
+        	deleteTaskFileDir(taskFileDirPath);
+        } 
+        boolean created = taskDir.mkdirs();
+    	if (!created) {
+    		throw new IOException("Failed to create directory for task file");
+    	}
 
         String fileContents = getTaskFileContents();
-        File file = new File(String.format("%s/.dunner_%s.yaml", taskFileDirPath, new Date().getTime()));
-        taskFilePath = file.getAbsolutePath();
+        File file = new File(String.format("%s/.dunner.yaml", taskFileDirPath));
+        String taskFilePath = file.getAbsolutePath();
         FileOutputStream fos = new FileOutputStream(file);
         fos.write(fileContents.getBytes());
         return taskFilePath;
@@ -72,9 +73,9 @@ public class DunnerTaskFileCreator {
 		return sb.toString();
 	}
 
-	public void deleteTaskFile() {
+	public void deleteTaskFileDir(String dir) {
 		try {
-			FileUtils.deleteDirectory(new File(taskFilePath).getParentFile());
+			FileUtils.deleteDirectory(new File(dir));
 		} catch(IOException e) {
 			logger.info("Failed to delete task file");
 		}
