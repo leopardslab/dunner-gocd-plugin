@@ -2,21 +2,23 @@ package com.leopardslab.dunner;
 
 import com.leopardslab.dunner.commands.DunnerDoCommand;
 import com.thoughtworks.go.plugin.api.logging.Logger;
-
+import com.thoughtworks.go.plugin.api.task.JobConsoleLogger;
 
 public class DunnerTaskExecutor {
     Logger logger = Logger.getLoggerFor(DunnerTaskExecutor.class);
+    private static JobConsoleLogger consoleLogger = JobConsoleLogger.getConsoleLogger();
 
     public Result execute(Config config, Context context) {
         DunnerTaskFileCreator tfc = new DunnerTaskFileCreator(config);
+        String taskFilePath = "";
         try {
-            String taskFilePath = tfc.saveToTempFile();
+            taskFilePath = tfc.saveToTempFile();
             return runCommand(context, config, taskFilePath);
         } catch (Exception ex) {
             logger.error("Error running the command", ex);
             return new Result(false, "Failed while running the task", ex);
         } finally {
-            tfc.deleteTaskFile();
+            consoleLogger.printLine(String.format("Dunner task file saved at %s", taskFilePath));
         }
     }
 

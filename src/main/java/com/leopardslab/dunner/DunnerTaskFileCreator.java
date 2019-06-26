@@ -12,8 +12,7 @@ import com.thoughtworks.go.plugin.api.logging.Logger;
 public class DunnerTaskFileCreator {
 	Logger logger = Logger.getLoggerFor(DunnerTask.class);
 
-	public static final String taskFileName = ".dunner.yaml";
-	public static final String taskFileDir = "dunner";
+	public static final String taskFileDir = "gocd_dunner";
 	private String taskFilePath;
 	private DunnerTaskFile task;
 
@@ -26,14 +25,17 @@ public class DunnerTaskFileCreator {
 
 	public String saveToTempFile() throws IOException {
         String workingDir = System.getProperty("user.dir");
-        String taskFileDirPath = String.format("%s/%s_%s", workingDir, taskFileDir, new Date().getTime());
-        boolean created = new File(taskFileDirPath).mkdirs();
-        if (!created) {
-        	throw new IOException("Failed to create temp directory");
+        String taskFileDirPath = String.format("%s/%s", workingDir, taskFileDir);
+        File taskDir = new File(taskFileDirPath);
+        if (!taskDir.exists()) {
+        	boolean created = taskDir.mkdirs();
+        	if (!created) {
+        		throw new IOException("Failed to create directory for task file");
+        	}
         }
 
         String fileContents = getTaskFileContents();
-        File file = new File(taskFileDirPath+"/"+taskFileName);
+        File file = new File(String.format("%s/.dunner_%s.yaml", taskFileDirPath, new Date().getTime()));
         taskFilePath = file.getAbsolutePath();
         FileOutputStream fos = new FileOutputStream(file);
         fos.write(fileContents.getBytes());

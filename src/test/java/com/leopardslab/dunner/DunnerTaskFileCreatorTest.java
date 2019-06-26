@@ -7,6 +7,7 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
@@ -86,7 +87,7 @@ public class DunnerTaskFileCreatorTest {
 		String obtained = new String(Files.readAllBytes(Paths.get(taskFilePath)));
 		FileUtils.deleteDirectory(new File(taskFilePath).getParentFile());
 		assertEquals("Task file contents not matching", expected, obtained);
-		assertTrue(taskFilePath.endsWith(DunnerTaskFileCreator.taskFileName));
+		assertTrue(Pattern.matches(String.format("%s/gocd_dunner/.dunner_\\d*.yaml", System.getProperty("user.dir")), taskFilePath));
 	}
 
 }
