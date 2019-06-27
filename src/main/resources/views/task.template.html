@@ -10,7 +10,8 @@
 </div>
 <div class="form_item_block">
     <label>Commands:</label>
-    <textarea ng-model="COMMANDS" ng-required="false" cols="100" rows="10" placeholder="Enter each command on a new line"></textarea>
+    <textarea ng-model="COMMANDS" ng-required="true" cols="100" rows="10" placeholder="Enter each command on a new line"></textarea>
+    <span class="form_error" ng-show="GOINPUTNAME[COMMANDS].$error.server">{{ GOINPUTNAME[COMMANDS].$error.server }}</span>
 </div>
 <div class="form_item_block">
     <label>Mounts:</label>

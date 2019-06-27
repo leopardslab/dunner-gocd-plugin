@@ -13,19 +13,19 @@ public class DunnerTaskExecutor {
         String taskFilePath = "";
         try {
             taskFilePath = tfc.saveToTempFile();
-            return runCommand(context, config, taskFilePath);
         } catch (Exception ex) {
-            logger.error("Error running the command", ex);
-            return new Result(false, "Failed while running the task", ex);
-        } finally {
-            consoleLogger.printLine(String.format("Dunner task file saved at %s", taskFilePath));
+            logger.error("Failed to create dunner task file", ex);
+            return new Result(false, "Failed to create dunner task file");
         }
+        Result result = runCommand(context, config, taskFilePath);
+        consoleLogger.printLine(String.format("Dunner task file saved at %s", taskFilePath));
+        return result;
     }
 
-    private Result runCommand(Context taskContext, Config taskConfig, String taskFilePath) throws Exception {
+    private Result runCommand(Context taskContext, Config taskConfig, String taskFilePath) {
         try {
             new DunnerDoCommand(taskContext, taskConfig, taskFilePath).run();
-            return new Result(true, "Finished");
+            return new Result(true, "Task execution complete");
         } catch(Exception ex) {
             logger.error("Error running the command", ex);
             return new Result(false, "Task execution failed");
