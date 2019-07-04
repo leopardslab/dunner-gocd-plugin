@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import org.apache.commons.io.FileUtils;
 import com.thoughtworks.go.plugin.api.logging.Logger;
 
@@ -14,6 +16,7 @@ public class DunnerTaskFileCreator {
 
 	public static final String taskFileDir = "gocd_dunner";
 	private DunnerTaskFile task;
+	private HashMap<String, String> envs = new HashMap<String, String>();
 	private String pwd = "";
 
 	public DunnerTaskFileCreator(Config taskConfig, Context context) {
@@ -21,6 +24,7 @@ public class DunnerTaskFileCreator {
 		String[] taskMounts = clean(taskConfig.getMounts());
 		String[] taskEnvs = clean(taskConfig.getEnvs());
 		pwd = context.getWorkingDir();
+		envs = (HashMap<String, String>)context.getEnvironmentVariables();
 		this.task = new DunnerTaskFile(taskConfig.getName(), taskConfig.getImage(), taskCommands, taskMounts, taskEnvs);
 	}
 
@@ -69,6 +73,10 @@ public class DunnerTaskFileCreator {
 		sb.append("    envs:\n");
 		for (String e : task.envs) {
 			sb.append(String.format("      - \"%s\"\n", e));
+		}
+		System.out.println(this.envs);
+		for (Map.Entry<String, String> entry : this.envs.entrySet()) {
+			sb.append(String.format("      - \"%s=%s\"\n", entry.getKey(), entry.getValue()));
 		}
 		return sb.toString();
 	}

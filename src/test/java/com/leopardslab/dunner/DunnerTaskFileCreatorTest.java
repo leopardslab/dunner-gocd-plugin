@@ -68,8 +68,14 @@ public class DunnerTaskFileCreatorTest {
 		    }});
 		}};
 		Config config = new Config(configMap);
-		Context context = new Context(new HashMap<String, String>() {{
-			put("workingDirectory", System.getProperty("java.io.tmpdir"));
+		String wd = System.getProperty("java.io.tmpdir");
+		HashMap<String, String> envs = new HashMap<String, String>() {{
+			put("foo", "bar");
+			put("hello", "world");
+		}};
+		Context context = new Context(new HashMap<String, Object>() {{
+			put("workingDirectory", wd);
+			put("environmentVariables", envs);
 		}});
 		DunnerTaskFileCreator creator = new DunnerTaskFileCreator(config, context);
 
@@ -87,7 +93,53 @@ public class DunnerTaskFileCreatorTest {
 	"    envs:\n" +
 	"      - \"FOO=bar\"\n" +
 	"      - \"ONE=two\"\n" +
-	"      - \"iam=awesome\"\n";
+	"      - \"iam=awesome\"\n" +
+	"      - \"foo=bar\"\n" +
+	"      - \"hello=world\"\n";
+		String obtained = new String(Files.readAllBytes(Paths.get(taskFilePath)));
+		FileUtils.deleteDirectory(new File(taskFilePath).getParentFile());
+		assertEquals("Task file contents not matching", expected, obtained);
+		assertTrue(Pattern.matches(String.format("%sgocd_dunner/.dunner.yaml", System.getProperty("java.io.tmpdir")), taskFilePath));
+	}
+
+		@Test
+	public void testSaveToTempFileWithNoEnvs() throws IOException {
+		HashMap<String, Map> configMap = new HashMap<String, Map>() {{
+		    put("NAME", new HashMap<String, String>() {{
+		    	put("value", "golang_test");
+		    }});
+		    put("IMAGE", new HashMap<String, String>() {{
+		    	put("value", "golang");
+		    }});
+		    put("COMMANDS", new HashMap<String, String>() {{
+		    	put("value", "go   version\ncurl version");
+		    }});
+		    put("MOUNTS", new HashMap<String, String>() {{
+		    	put("value", "abcd:foo:r\nfoo:bar");
+		    }});
+		    put("ENVS", new HashMap<String, String>() {{
+		    }});
+		}};
+		String wd = System.getProperty("java.io.tmpdir");
+		Context context = new Context(new HashMap<String, Object>() {{
+			put("workingDirectory", wd);
+			put("environmentVariables", new HashMap<String, String>());
+		}});
+
+		DunnerTaskFileCreator creator = new DunnerTaskFileCreator(new Config(configMap), context);
+
+		String taskFilePath = creator.saveToTempFile();
+
+		String expected = "golang_test:\n" +
+	"  - image: golang\n"+
+	"    name: golang_test\n" +
+	"    commands:\n" +
+	"      - [\"go\",\"version\"]\n" +
+	"      - [\"curl\",\"version\"]\n" +
+	"    mounts:\n" +
+	"      - \"abcd:foo:r\"\n" +
+	"      - \"foo:bar\"\n" +
+	"    envs:\n";
 		String obtained = new String(Files.readAllBytes(Paths.get(taskFilePath)));
 		FileUtils.deleteDirectory(new File(taskFilePath).getParentFile());
 		assertEquals("Task file contents not matching", expected, obtained);
