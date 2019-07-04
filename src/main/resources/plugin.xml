@@ -2,9 +2,9 @@
 <go-plugin id="dunner-gocd-plugin" version="1">
     <about>
         <name>Dunner GoCD Plugin</name>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
         <description>GoCD Plugin for Dunner task runner based on Docker</description>
-        <target-go-version>17.3.0</target-go-version>
+        <target-go-version>17.2.0</target-go-version>
         <vendor>
             <name>LeopardsLab</name>
             <url>https://github.com/leopardslab</url>
