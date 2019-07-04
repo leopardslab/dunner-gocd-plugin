@@ -19,7 +19,7 @@ Download the jar file of this plugin and copy it to the external plugins directo
 
 	![Configure Dunner Task](docs/images/create_dunner_task.png)
 
-Enter each command, mount directory and env variable in a new line. Example: 
+* Enter each command, mount directory and env variable in a new line. Example:
 
 	![Edit Dunner Task](docs/images/edit_dunner_task.png)
 
