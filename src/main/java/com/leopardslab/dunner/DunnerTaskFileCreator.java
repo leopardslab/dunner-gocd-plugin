@@ -16,7 +16,7 @@ public class DunnerTaskFileCreator {
 
 	public static final String taskFileDir = "gocd_dunner";
 	private DunnerTaskFile task;
-	private HashMap<String, String> envs = new HashMap<String, String>();
+	private Map<String, String> envs = new HashMap<String, String>();
 	private String pwd = "";
 
 	public DunnerTaskFileCreator(Config taskConfig, Context context) {
@@ -24,7 +24,12 @@ public class DunnerTaskFileCreator {
 		String[] taskMounts = clean(taskConfig.getMounts());
 		String[] taskEnvs = clean(taskConfig.getEnvs());
 		pwd = context.getWorkingDir();
-		envs = (HashMap<String, String>)context.getEnvironmentVariables();
+		Map goEnvs = context.getEnvironmentVariables();
+		if (goEnvs != null) {
+			envs = new HashMap<String, String>() {{
+				putAll(goEnvs);
+			}};
+		}
 		this.task = new DunnerTaskFile(taskConfig.getName(), taskConfig.getImage(), taskCommands, taskMounts, taskEnvs);
 	}
 
