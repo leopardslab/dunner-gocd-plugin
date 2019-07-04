@@ -2,7 +2,7 @@
 <go-plugin id="dunner-gocd-plugin" version="1">
     <about>
         <name>Dunner GoCD Plugin</name>
-        <version>0.0.1</version>
+        <version>1.0.0</version>
         <description>GoCD Plugin for Dunner task runner based on Docker</description>
         <target-go-version>17.3.0</target-go-version>
         <vendor>
