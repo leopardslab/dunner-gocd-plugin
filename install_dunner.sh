@@ -5,10 +5,12 @@ API_URL="https://api.github.com/repos/leopardslab/dunner/releases"
 RELEASES_URL="https://github.com/leopardslab/dunner/releases"
 
 setVersion() {
+  echo "Finding latest version of dunner"
   VERSION=$(curl --silent "$API_URL/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/');
   if [ "$VERSION" == "" ]; then
     exit 1
   fi
+  echo "version: $VERSION"
 }
 
 binInstall() {

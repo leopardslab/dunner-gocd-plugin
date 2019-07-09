@@ -12,6 +12,7 @@ env:
 
 script:
   - bash install_dunner.sh
+  - dunner version
   - gradle clean install
   - gradle test
   - gradle build
