@@ -99,7 +99,7 @@ public class DunnerTaskFileCreatorTest {
 		String obtained = new String(Files.readAllBytes(Paths.get(taskFilePath)));
 		FileUtils.deleteDirectory(new File(taskFilePath).getParentFile());
 		assertEquals("Task file contents not matching", expected, obtained);
-		assertTrue(Pattern.matches(String.format("%sgocd_dunner/.dunner.yaml", wd), taskFilePath));
+		assertEquals(String.format("%sgocd_dunner/.dunner.yaml", wd), taskFilePath);
 	}
 
 		@Test
@@ -143,7 +143,7 @@ public class DunnerTaskFileCreatorTest {
 		String obtained = new String(Files.readAllBytes(Paths.get(taskFilePath)));
 		FileUtils.deleteDirectory(new File(taskFilePath).getParentFile());
 		assertEquals("Task file contents not matching", expected, obtained);
-		assertTrue(Pattern.matches(String.format("%sgocd_dunner/.dunner.yaml", wd), taskFilePath));
+		assertEquals(String.format("%sgocd_dunner/.dunner.yaml", wd), taskFilePath);
 	}
 
 }
