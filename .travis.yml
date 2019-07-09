@@ -6,6 +6,10 @@ jdk:
 services:
   - docker
 
+env:
+  global:
+  - PATH=$TRAVIS_BUILD_DIR/dunner-gocd-plugin:$PATH
+
 script:
   - bash install_dunner.sh
   - gradle clean install

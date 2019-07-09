@@ -28,7 +28,6 @@ binInstall() {
     wget -O "dunner.tar.gz" $downloadUrl 2>/dev/null || curl -o "dunner.tar.gz" -L $downloadUrl
     if [[ $OS == 'Linux' || $OS == 'Darwin' ]]; then
         tar -xf dunner.tar.gz
-        cp dunner /usr/local/bin/
     fi
   else
     echo "'tar' command not found..."
