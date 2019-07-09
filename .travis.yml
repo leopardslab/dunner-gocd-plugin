@@ -3,6 +3,12 @@ language: java
 jdk:
   - oraclejdk8
 
+services:
+  - docker
+
+before_script:
+  - ./install_dunner.sh
+
 script:
   - gradle clean install
   - gradle test
