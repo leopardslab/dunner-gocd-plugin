@@ -16,5 +16,5 @@ script:
   - ls -al
   - echo $PATH
   - gradle clean install
-  - gradle test
+  - gradle test --info
   - gradle build
