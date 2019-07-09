@@ -21,11 +21,6 @@ binInstall() {
   OS=$(uname -s)
 
   ver=$(echo $VERSION | sed s/v//g)
-  release=$(curl -s ${API_URL} | grep -i "\"name\": \"dunner_${ver}_${OS}_${ARCH}.tar.gz\",")
-  if [[ -z $release ]]; then
-    echo "OS $OS with $ARCH architecture is not supported corresponding to version $VERSION"
-    exit 1
-  fi
   if [[ $(which tar) ]]; then
     downloadUrl="${RELEASES_URL}/download/${VERSION}/dunner_${ver}_${OS}_${ARCH}.tar.gz"
     echo "Downloading dunner_${ver}_${OS}_${ARCH}..."
