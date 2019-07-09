@@ -8,6 +8,8 @@ setVersion() {
   echo "Finding latest version of dunner"
   VERSION=$(curl --silent "$API_URL/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/');
   if [ "$VERSION" == "" ]; then
+    VERSION=$(curl "$API_URL/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/');
+    echo "Version not set"
     exit 1
   fi
   echo "version: $VERSION"
