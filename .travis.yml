@@ -14,6 +14,8 @@ script:
   - bash install_dunner.sh
   - dunner version
   - ls -al
+  - pwd
+  - echo $PATH
   - gradle clean install
   - gradle test
   - gradle build
