@@ -6,10 +6,8 @@ jdk:
 services:
   - docker
 
-before_script:
-  - ./install_dunner.sh
-
 script:
+  - bash install_dunner.sh
   - gradle clean install
   - gradle test
   - gradle build
