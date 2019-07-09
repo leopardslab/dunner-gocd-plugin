@@ -6,11 +6,11 @@ RELEASES_URL="https://github.com/leopardslab/dunner/releases"
 
 setVersion() {
   echo "Finding latest version of dunner"
-  VERSION=$(curl --silent "$API_URL/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/');
+  VERSION=$(curl -s "$API_URL/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/');
   if [ "$VERSION" == "" ]; then
     VERSION=$(curl "$API_URL/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/');
     echo "Version not set"
-    exit 1
+    VERSION="v2.1.3"
   fi
   echo "version: $VERSION"
 }
