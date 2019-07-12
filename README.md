@@ -7,7 +7,7 @@ A [GoCD](https://gocd.org) task plugin for [Dunner](https://github.com/leopardsl
 
 This plugin can be installed using the [GoCD standard plugin installation instructions](https://docs.gocd.org/current/extension_points/plugin_user_guide.html).
 
-Download the jar file of this plugin and copy it to the external plugins directory of Go-Server. Restart your server to see the plugin added to your GoCD.
+Download the latest jar file of this plugin from [Github Releases](https://github.com/leopardslab/dunner-gocd-plugin/releases) and copy it to the external plugins directory(`<go_server>/plugins/external`) of Go-Server. Restart your server to see the plugin added to GoCD.
 
 ## Task Configuration
 
@@ -19,7 +19,7 @@ Download the jar file of this plugin and copy it to the external plugins directo
 
 	![Configure Dunner Task](docs/images/create_dunner_task.png)
 
-* Enter each command, mount directory and env variable in a new line. Example:
+* Enter each command, mount directory and env variable in a new line. By default project root directory will be mounted to container. If any additional mount directories are required, specify them in `Mounts` section. Example:
 
 	![Edit Dunner Task](docs/images/edit_dunner_task.png)
 
