@@ -1,5 +1,6 @@
 package com.leopardslab.dunner;
 
+import java.nio.file.Paths;
 import com.leopardslab.dunner.commands.DunnerDoCommand;
 import com.thoughtworks.go.plugin.api.logging.Logger;
 import com.thoughtworks.go.plugin.api.task.JobConsoleLogger;
@@ -17,14 +18,17 @@ public class DunnerTaskExecutor {
             logger.error("Failed to create dunner task file", ex);
             return new Result(false, "Failed to create dunner task file");
         }
-        Result result = runCommand(context, config, taskFilePath);
+        String wd = context.getWorkingDir();
+        String pwd = Paths.get(System.getProperty("user.dir"), wd).toAbsolutePath().toString();
+
+        Result result = runCommand(context, config, taskFilePath, pwd);
         consoleLogger.printLine(String.format("Dunner task file saved at %s", taskFilePath));
         return result;
     }
 
-    private Result runCommand(Context taskContext, Config taskConfig, String taskFilePath) {
+    private Result runCommand(Context taskContext, Config taskConfig, String taskFilePath, String pwd) {
         try {
-            new DunnerDoCommand(taskContext, taskConfig, taskFilePath).run();
+            new DunnerDoCommand(taskContext, taskConfig, taskFilePath, pwd).run();
             return new Result(true, "Task execution complete");
         } catch(Exception ex) {
             logger.error("Error running the command", ex);

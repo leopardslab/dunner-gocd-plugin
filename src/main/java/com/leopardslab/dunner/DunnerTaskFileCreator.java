@@ -4,8 +4,10 @@ import java.io.FileOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.commons.io.FileUtils;
@@ -20,10 +22,11 @@ public class DunnerTaskFileCreator {
 	private String pwd = "";
 
 	public DunnerTaskFileCreator(Config taskConfig, Context context) {
-		String[] taskCommands = clean(taskConfig.getCommands());
-		String[] taskMounts = clean(taskConfig.getMounts());
-		String[] taskEnvs = clean(taskConfig.getEnvs());
-		pwd = context.getWorkingDir();
+		ArrayList<String> taskCommands = new ArrayList(Arrays.asList(clean(taskConfig.getCommands())));
+		ArrayList<String> taskMounts = new ArrayList(Arrays.asList(clean(taskConfig.getMounts())));
+		ArrayList<String> taskEnvs = new ArrayList(Arrays.asList(clean(taskConfig.getEnvs())));
+		String wd = context.getWorkingDir();
+		pwd = Paths.get(System.getProperty("user.dir"), wd).toAbsolutePath().toString();
 		Map goEnvs = context.getEnvironmentVariables();
 		if (goEnvs != null) {
 			envs = new HashMap<String, String>() {{

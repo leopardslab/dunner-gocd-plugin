@@ -1,13 +1,14 @@
 package com.leopardslab.dunner;
+import java.util.List;
 
 public class DunnerTaskFile {
 	public String name;
 	public String image;
-	public String[] commands;
-	public String[] mounts;
-	public String[] envs;
+	public List<String> commands;
+	public List<String> mounts;
+	public List<String> envs;
 
-	public DunnerTaskFile(String name, String image, String[] commands, String[] mounts, String[] envs) {
+	public DunnerTaskFile(String name, String image, List<String> commands, List<String> mounts, List<String> envs) {
 		this.name = name;
 		this.image = image;
 		this.commands = commands;

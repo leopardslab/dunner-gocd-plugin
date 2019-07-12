@@ -6,6 +6,7 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.util.HashMap;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -36,16 +37,21 @@ public class DunnerTaskFileCreatorTest {
 		    }});
 		}};
 		Config config = new Config(configMap);
-		Context context = new Context(new HashMap<String, String>());
+		String wd = "foo";
+		Context context = new Context(new HashMap<String, Object>() {{
+			put("workingDirectory", wd);
+			put("environmentVariables", new HashMap<String,String>());
+		}});
+
 		DunnerTaskFileCreator creator = new DunnerTaskFileCreator(config, context);
 
 		DunnerTaskFile taskFile = creator.getTask();
 
 		assertEquals("Task name invalid", "golang_test", taskFile.name);
 		assertEquals("Image name invalid", "golang", taskFile.image);
-		assertArrayEquals("Commands invalid", new String[]{"go version", "curl version"}, taskFile.commands);
-		assertArrayEquals("Mounts invalid", new String[]{"abcd:foo:r", "foo:bar"}, taskFile.mounts);
-		assertArrayEquals("Envs invalid", new String[]{"FOO=bar", "ONE=two", "iam=awesome"}, taskFile.envs);
+		assertTrue("Commands invalid", Arrays.asList("go version", "curl version").equals(taskFile.commands));
+		assertTrue("Mounts invalid", Arrays.asList("abcd:foo:r", "foo:bar").equals(taskFile.mounts));
+		assertTrue("Envs invalid", Arrays.asList("FOO=bar", "ONE=two", "iam=awesome").equals(taskFile.envs));
 	}
 
 	@Test
@@ -68,7 +74,7 @@ public class DunnerTaskFileCreatorTest {
 		    }});
 		}};
 		Config config = new Config(configMap);
-		String wd = System.getProperty("java.io.tmpdir");
+		String wd = "foo";
 		HashMap<String, String> envs = new HashMap<String, String>() {{
 			put("foo", "bar");
 			put("hello", "world");
@@ -120,7 +126,7 @@ public class DunnerTaskFileCreatorTest {
 		    put("ENVS", new HashMap<String, String>() {{
 		    }});
 		}};
-		String wd = System.getProperty("java.io.tmpdir");
+		String wd = "foo";
 		Context context = new Context(new HashMap<String, Object>() {{
 			put("workingDirectory", wd);
 			put("environmentVariables", new HashMap<String, String>());
